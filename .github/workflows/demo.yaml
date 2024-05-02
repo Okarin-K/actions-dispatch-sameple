@@ -20,9 +20,13 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: |
-          echo "🍏 This job's status is ${{ job.status }}."
-          echo '1' $GITHUB_REF
-          echo '2' ${{ github.ref }}
-          echo '3' ${{ github.ref_name }}
-          echo '4' ${{ github.head_ref }}
-          echo '5' ${{ github.base_ref }}
+          set -x
+          branch_name="develop"
+          remote_branches=$(git ls-remote --heads origin | awk '{print $2}' | sed 's/refs\/heads\///') 
+          if echo "$remote_branches" | grep -q "^$branch_name$"; then
+            echo "Branch $branch_name already exists"
+            git switch "$branch_name"
+          else
+            echo "Branch $branch_name does not exist"
+            git switch -c "$branch_name" 
+          fi
