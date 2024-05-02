@@ -22,6 +22,8 @@ jobs:
       - run: |
           set -x
           branch_name="develop"
+          # リポジトリの情報をフェッチして、全てのブランチ情報を更新
+          git fetch --all
           remote_branches=$(git ls-remote --heads origin | awk '{print $2}' | sed 's/refs\/heads\///')
           for branch in $remote_branches; do
             echo "リモートブランチ: $branch"
