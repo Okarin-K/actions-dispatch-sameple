@@ -24,14 +24,14 @@ jobs:
           branch_name="develop"
           remote_branches=$(git ls-remote --heads origin | awk '{print $2}' | sed 's/refs\/heads\///')
           for branch in $remote_branches; do
-            echo "Branch: $branch"
+            echo "リモートブランチ: $branch"
           done
-          echo "Branch: $(git branch --show-current)"
+          echo "今のブランチ: $(git branch --show-current)"
           if echo "$remote_branches" | grep -q "^$branch_name$"; then
-            echo "Branch $branch_name already exists"
+            echo "$branch_name が存在するので切り替えます"
             git switch "$branch_name"
           else
-            echo "Branch $branch_name does not exist"
+            echo "$branch_name が存在しないので作成して切り替えます"
             git switch -c "$branch_name" 
           fi
-          echo "Branch: $(git branch --show-current)"
+          echo "切り替え後のブランチ: $(git branch --show-current)"
