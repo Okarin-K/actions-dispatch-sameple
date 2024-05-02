@@ -22,7 +22,10 @@ jobs:
       - run: |
           set -x
           branch_name="develop"
-          remote_branches=$(git ls-remote --heads origin | awk '{print $2}' | sed 's/refs\/heads\///') 
+          remote_branches=$(git ls-remote --heads origin | awk '{print $2}' | sed 's/refs\/heads\///')
+          for branch in $remote_branches; do
+            echo "Branch: $branch"
+          done
           if echo "$remote_branches" | grep -q "^$branch_name$"; then
             echo "Branch $branch_name already exists"
             git switch "$branch_name"
