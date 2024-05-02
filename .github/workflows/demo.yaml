@@ -26,6 +26,7 @@ jobs:
           for branch in $remote_branches; do
             echo "Branch: $branch"
           done
+          echo "Branch: $(git branch --show-current)"
           if echo "$remote_branches" | grep -q "^$branch_name$"; then
             echo "Branch $branch_name already exists"
             git switch "$branch_name"
@@ -33,3 +34,4 @@ jobs:
             echo "Branch $branch_name does not exist"
             git switch -c "$branch_name" 
           fi
+          echo "Branch: $(git branch --show-current)"
