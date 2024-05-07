@@ -19,9 +19,14 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
+      - name: Change branch
+        run: |
+          echo "現在のブランチ: $(git branch --show-current)"
+          git switch develop
+          echo "切り替え後のブランチ: $(git branch --show-current)"
       - run: |
-          set -x
-          branch_name="develop"
+          echo ジョブが変わってもbranchが変わらない
+          echo "現在のブランチ: $(git branch --show-current)"
           # リポジトリの情報をフェッチして、全てのブランチ情報を更新
           git fetch --all
           remote_branches=$(git ls-remote --heads origin | awk '{print $2}' | sed 's/refs\/heads\///')
