@@ -22,6 +22,8 @@ jobs:
       - name: Change branch
         run: |
           echo "現在のブランチ: $(git branch --show-current)"
+          # リポジトリの情報をフェッチして、全てのブランチ情報を更新
+          git fetch --all
           git switch develop
           echo "切り替え後のブランチ: $(git branch --show-current)"
       - run: |
