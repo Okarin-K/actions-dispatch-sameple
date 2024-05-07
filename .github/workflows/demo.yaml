@@ -26,8 +26,9 @@ jobs:
           git fetch --all
           git switch develop
           echo "切り替え後のブランチ: $(git branch --show-current)"
-      - run: |
-          echo ジョブが変わってもbranchが変わらない
+      - name: ジョブが変わってもbranchが変わらない
+        run: |
+          branch_name="feature/test"
           echo "現在のブランチ: $(git branch --show-current)"
           # リポジトリの情報をフェッチして、全てのブランチ情報を更新
           git fetch --all
