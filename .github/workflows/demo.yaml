@@ -5,6 +5,9 @@ on:
   workflow_dispatch:
   push:
 
+env:
+  branch_name: feature/test
+
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
@@ -21,6 +24,7 @@ jobs:
           ls ${{ github.workspace }}
       - name: Change branch
         run: |
+          echo "環境変数のブランチ: ${{ env.branch_name }}"
           echo "現在のブランチ: $(git branch --show-current)"
           # リポジトリの情報をフェッチして、全てのブランチ情報を更新
           git fetch --all
@@ -28,7 +32,7 @@ jobs:
           echo "切り替え後のブランチ: $(git branch --show-current)"
       - name: ジョブが変わってもbranchが変わらない
         run: |
-          branch_name="feature/test"
+          echo "環境変数のブランチ: ${{ env.branch_name }}"
           echo "現在のブランチ: $(git branch --show-current)"
           # リポジトリの情報をフェッチして、全てのブランチ情報を更新
           git fetch --all
