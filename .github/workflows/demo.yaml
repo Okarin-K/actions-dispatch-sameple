@@ -22,30 +22,26 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-      - name: Change branch
+      - name: Create or switch branch
         run: |
-          echo "環境変数のブランチ: ${{ env.branch_name }}"
-          echo "現在のブランチ: $(git branch --show-current)"
-          # リポジトリの情報をフェッチして、全てのブランチ情報を更新
+          echo "current branch: $(git branch --show-current)"
           git fetch --all
-          git switch develop
-          echo "切り替え後のブランチ: $(git branch --show-current)"
-      - name: ジョブが変わってもbranchが変わらない
-        run: |
-          echo "環境変数のブランチ: ${{ env.branch_name }}"
-          echo "現在のブランチ: $(git branch --show-current)"
-          # リポジトリの情報をフェッチして、全てのブランチ情報を更新
-          git fetch --all
-          remote_branches=$(git ls-remote --heads origin | awk '{print $2}' | sed 's/refs\/heads\///')
-          for branch in $remote_branches; do
-            echo "リモートブランチ: $branch"
-          done
-          echo "今のブランチ: $(git branch --show-current)"
+          remote_branches=$(git ls-remote --heads origin | awk '{print $2}' | sed 's/refs\/heads\///') 
           if echo "$remote_branches" | grep -q "^$branch_name$"; then
-            echo "$branch_name が存在するので切り替えます"
             git switch "$branch_name"
           else
-            echo "$branch_name が存在しないので作成して切り替えます"
             git switch -c "$branch_name" 
           fi
-          echo "切り替え後のブランチ: $(git branch --show-current)"
+      - name: ジョブが変わってもbranchが変わらない
+        run: |
+          echo "env branch: ${{ env.branch_name }}"
+          echo "current branch: $(git branch --show-current)"
+      - name: error
+        id: error
+        run: |
+          echo "error"
+          exit 1
+      - name: 処理されないこと
+        if: steps.error.outcome == 'failure'
+        run: |
+          echo "error"
